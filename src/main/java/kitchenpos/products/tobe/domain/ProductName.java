@@ -2,9 +2,9 @@ package kitchenpos.products.tobe.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import kitchenpos.products.infra.PurgomalumClient;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Embeddable
 public class ProductName {
@@ -14,11 +14,11 @@ public class ProductName {
     protected ProductName() {
     }
 
-    public ProductName(final String name, final PurgomalumClient purgomalumClient) {
+    public ProductName(final String name, final Predicate<String> profanityChecker) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("상품명은 필수로 입력해야 합니다.");
         }
-        if (purgomalumClient.containsProfanity(name)) {
+        if (profanityChecker.test(name)) {
             throw new IllegalArgumentException("상품명에 욕설이 포함되어 있습니다.");
         }
         this.name = name;

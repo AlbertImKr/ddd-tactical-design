@@ -30,7 +30,7 @@ public class ProductService {
     @Transactional
     public Product create(final ProductCreateRequest request) {
         final var id = UUID.randomUUID();
-        final var name = new ProductName(request.name(), purgomalumClient);
+        final var name = new ProductName(request.name(), purgomalumClient::containsProfanity);
         final var price = new ProductPrice(request.price());
         return productRepository.save(new Product(id, name, price));
     }

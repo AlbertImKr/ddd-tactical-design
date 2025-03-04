@@ -35,7 +35,7 @@ class ProductServiceTest {
     @Test
     void create() {
         // given
-        final ProductName expectedName = new ProductName("후라이드", purgomalumClient);
+        final ProductName expectedName = new ProductName("후라이드", purgomalumClient::containsProfanity);
         final ProductPrice expectedPrice = new ProductPrice(BigDecimal.valueOf(16_000L));
         final ProductCreateRequest request = new ProductCreateRequest(expectedName.value(), expectedPrice.value());
 
@@ -81,8 +81,8 @@ class ProductServiceTest {
         assertThat(actual).hasSize(2);
     }
 
-    private @NotNull Product createProduct(String name, long price, PurgomalumClient purgomalumClient1) {
-        final ProductName productName = new ProductName(name, purgomalumClient1);
+    private @NotNull Product createProduct(String name, long price, PurgomalumClient purgomalumClient) {
+        final ProductName productName = new ProductName(name, purgomalumClient::containsProfanity);
         final ProductPrice productPrice = new ProductPrice(BigDecimal.valueOf(price));
         return new Product(UUID.randomUUID(), productName, productPrice);
     }
