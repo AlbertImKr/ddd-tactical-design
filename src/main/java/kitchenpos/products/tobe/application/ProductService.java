@@ -7,6 +7,7 @@ import kitchenpos.products.tobe.domain.ProductPrice;
 import kitchenpos.products.tobe.domain.ProductRepository;
 import kitchenpos.products.tobe.ui.ProductChangePriceRequest;
 import kitchenpos.products.tobe.ui.ProductCreateRequest;
+import kitchenpos.products.tobe.ui.ProductResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +46,13 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductResponse> listByIds(final List<UUID> productIds) {
+        List<Product> products = productRepository.findAllByIdIn(productIds);
+        return products.stream()
+                .map(product -> new ProductResponse(product.getId(), product.getPrice().value()))
+                .toList();
     }
 }
